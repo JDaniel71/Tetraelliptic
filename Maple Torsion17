@@ -1,0 +1,157 @@
+# Defining equation of X_1(17)
+> f:=(x,y)->y^4 + (x^3 + x^2 - x + 2)*y^3 + (x^3 - 3*x + 1)*y^2 - (x^4 + 2*x)*y + x^3 + x^2:
+# Defining equation of E_17=71A2 
+> g:=(x,y)->-x^3 + x^2 + x*y + y^2 + 6*x + y + 4:
+# U(x,y),V(x,y) define a tetraelliptic map from X_1(17) to E_17.
+> U:=(x,y)->(x^2 + x*y - y^2 + x - 2*y - 1)/(y + 1)^2:
+> V:=(x,y)->-(-x^3*y^2 + x^4 - 2*x^3*y - 2*x^2*y^2 + x^3 - x^2*y - y^3 + x*y - y^2)/((y + 1)^2*(x - y)):
+> rem(numer(factor(g(U(x,y),V(x,y)))),f(x,y),x);
+                               0
+
+;
+# Torsion subgroup of E_17 is the Klein four group and the three points of order 2 are (-1,0), (3,-2), (-4/5,1/8).  
+> solve({U(x,y)=3,V(x,y)=-2, f(x,y)=0},{x,y});
+> solve({U(x,y)=-5/4,V(x,y)=1/8, f(x,y)=0},{x,y});
+     /                                                     
+     |          /    4       3       2            \      1 
+    < x = RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/, y = - 
+     |                                                   2 
+     \                                                     
+
+                                               2
+            /    4       3       2            \ 
+      RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/ 
+
+                                                        \ 
+         1       /    4       3       2            \    | 
+       - - RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/ - 2 >
+         2                                              | 
+                                                        / 
+
+
+    /          /    4        3        2            \  
+   { x = RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/, 
+    \                                                 
+
+                  /    4        3        2            \    \ 
+     y = -2 RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ - 1 }
+                                                           / 
+
+
+;
+> galois(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8);
+> galois(8*_Z^4 + 14*_Z^3 - 11*_Z^2 - 11*_Z - 2);
+             "4T1", {"C(4)"}, "-", 4, {"(1 2 3 4)"}
+
+             "4T1", {"C(4)"}, "-", 4, {"(1 2 3 4)"}
+
+;
+# There are eight points on the curve X_1(17) with four points over (3,-2) and another four points over (-4/5,1/8).
+# They are defined over cylic quartic number fields.
+> solve({U(x,y)=-1,V(x,y)=0, f(x,y)=0},{x,y});
+                        {x = -1, y = 0}
+
+;
+> 
+;
+# The point (-1,0) corresponds to a cusp.
+> 
+;
+# Finding the relation between the generators b, c from the Tate normal form and x, y computed by Sutherland.
+> b:='b': c:='c': r:='r': s:='s': x:='x': y:='y':
+> c :=s*(r-1): b:=c*r:
+> r :=(x^2 + x - y)/(x^2 + x*y + x - y^2 - y):
+> s := (x + 1)/(x + y + 1):
+> simplify(b);
+> simplify(c);
+                                    / 2        \   
+                  (x + 1) y (x - y) \x  + x - y/   
+             - ------------------------------------
+                                                  2
+                           / 2          2        \ 
+               (x + y + 1) \x  + x y - y  + x - y/ 
+
+                        (x - y) y (x + 1)           
+            - --------------------------------------
+                          /  2                2    \
+              (x + y + 1) \-y  + (x - 1) y + x  + x/
+
+;
+> b:=(x,y)->-(x + 1)*y*(x - y)*(x^2 + x - y)/((x + y + 1)*(x^2 + x*y - y^2 + x - y)^2):
+> c:=(x,y)->-(x - y)*y*(x + 1)/((x + y + 1)*(-y^2 + (x - 1)*y + x^2 + x)):
+> 
+;
+# Find elliptic curves corresponding to four points on X_1(17) lying above (3,-2):
+# i.e. (x1,y1) where x1 = RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8) and y1 = RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8)^2/2 - RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8)/2 - 2
+> x1 := RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8):
+> y1 := RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8)^2/2 - RootOf(2*_Z^4 - 5*_Z^3 - 7*_Z^2 + 10*_Z + 8)/2 - 2:
+> factor(b(x1,y1));
+> factor(c(x1,y1));
+                                                2
+  3233       /    4       3       2            \ 
+  ---- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/ 
+   64                                            
+
+       12285       /    4       3       2            \
+     + ----- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/
+        64                                            
+
+                                                     3       
+       1337       /    4       3       2            \    1135
+     - ---- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/  + ----
+        32                                                16 
+
+
+    535       /    4       3       2            \
+    --- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/
+    32                                           
+
+                                                     3
+         59       /    4       3       2            \ 
+       - -- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/ 
+         16                                           
+
+                                                      2     
+         147       /    4       3       2            \    45
+       + --- RootOf\2 _Z  - 5 _Z  - 7 _Z  + 10 _Z + 8/  + --
+         32                                               8 
+
+
+;
+> 
+;
+# Find elliptic curves corresponding to four points on X_1(17) lying above (-4/5,1/8):
+# i.e. (x2,y2) where x2 = RootOf(8*_Z^4 + 14*_Z^3 - 11*_Z^2 - 11*_Z - 2), y2 = -2*RootOf(8*_Z^4 + 14*_Z^3 - 11*_Z^2 - 11*_Z - 2) - 1
+> x2 := RootOf(8*_Z^4 + 14*_Z^3 - 11*_Z^2 - 11*_Z - 2):
+> y2 := -2*RootOf(8*_Z^4 + 14*_Z^3 - 11*_Z^2 - 11*_Z - 2) - 1:
+> factor(b(x2,y2));
+> factor(c(x2,y2));
+                                                   3
+   6901       /    4        3        2            \ 
+ - ---- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ 
+   1024                                             
+
+                                                       2
+      41387       /    4        3        2            \ 
+    - ----- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ 
+      4096                                              
+
+      91011       /    4        3        2            \   39449
+    + ----- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ + -----
+      8192                                                8192 
+
+
+                                                   3
+    139       /    4        3        2            \ 
+  - --- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ 
+    16                                              
+
+                                                      2
+       725       /    4        3        2            \ 
+     - --- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ 
+       64                                              
+
+       2301       /    4        3        2            \   871
+     + ---- RootOf\8 _Z  + 14 _Z  - 11 _Z  - 11 _Z - 2/ + ---
+       128                                                128
+
